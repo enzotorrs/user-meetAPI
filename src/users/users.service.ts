@@ -29,11 +29,26 @@ export class UsersService {
 
     async deleteUserById(id: number): Promise<message>{
         const result = await this.userRepository.delete(id)
+
         if(result.affected!==0){
             return {
-                message: `user with id ${id} removido com sucesso`
+                message: `user with id ${id} deleted`
             }
         }
+
         throw new BadRequestException()
+    }
+
+    async updateUser(user: User): Promise<User>{
+        const exist = await this.userRepository.findOne(user.id);
+
+        if(exist){
+            const userUpdated = await this.userRepository.save(user)
+            return userUpdated;
+        }
+
+        throw new BadRequestException()
+
+
     }
 }

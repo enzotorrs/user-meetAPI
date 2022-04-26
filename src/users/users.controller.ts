@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { User } from './user.entity';
-import { UsersService } from './users.service';
+import { message, UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
@@ -24,5 +24,12 @@ export class UsersController {
     async saveUser(@Body() user: User): Promise<User> {
         const newUser = await this.usersService.saveUser(user);
         return newUser;
+    }
+
+    @Delete(':id')
+    async deleteUserById(@Param('id') id: number): Promise<message>{
+        const result = await this.usersService.deleteUserById(id);
+        return result;
+        
     }
 }

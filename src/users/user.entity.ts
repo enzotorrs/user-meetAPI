@@ -16,5 +16,5 @@ export class User{
     @Column({
         default: false,
     })
-    idSuperUser?: boolean;
+    isSuperUser?: boolean;
 }

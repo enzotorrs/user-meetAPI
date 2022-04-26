@@ -1,7 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './user.entity';
+
+export type message = {
+    message: string;
+}
 
 @Injectable()
 export class UsersService {
@@ -21,5 +25,15 @@ export class UsersService {
     async saveUser(user: User): Promise<User>{
         const newUser = await this.userRepository.save(user);
         return newUser;
+    }
+
+    async deleteUserById(id: number): Promise<message>{
+        const result = await this.userRepository.delete(id)
+        if(result.affected!==0){
+            return {
+                message: `user with id ${id} removido com sucesso`
+            }
+        }
+        throw new BadRequestException()
     }
 }

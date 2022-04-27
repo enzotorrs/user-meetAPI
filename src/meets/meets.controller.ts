@@ -1,4 +1,15 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { Meet } from './meet.entity';
+import { MeetsService } from './meets.service';
 
 @Controller('meets')
-export class MeetsController {}
+export class MeetsController {
+    constructor(
+        private readonly meetService: MeetsService,
+    ){}
+
+    @Get()
+    async getAllMeets(): Promise<Meet[]>{
+        return await this.meetService.getAllMeets();
+    }
+}

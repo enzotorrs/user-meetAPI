@@ -13,4 +13,10 @@ export class MeetsService {
     async getAllMeets(): Promise<Meet[]> {
         return await this.meetRepository.find();
     }
+
+    async saveNewMeet(meet: Meet): Promise<Meet>{
+        const newMeet = this.meetRepository.save(meet);
+
+        return newMeet;
+    }
 }

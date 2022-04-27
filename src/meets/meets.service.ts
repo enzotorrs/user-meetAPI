@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Meet } from './meet.entity';
@@ -18,5 +18,16 @@ export class MeetsService {
         const newMeet = this.meetRepository.save(meet);
 
         return newMeet;
+    }
+
+    async updateMeet(meet: Meet): Promise<Meet>{
+        const exist = await this.meetRepository.findOne(meet.id);
+        
+        if(exist){
+            const meetUpdated = await this.meetRepository.save(meet);
+            return meetUpdated;
+        }
+
+        throw new BadRequestException("Meet not exists")
     }
 }

@@ -30,4 +30,16 @@ export class MeetsService {
 
         throw new BadRequestException("Meet not exists")
     }
+
+    async deleteMeet(id: number): Promise<Meet>{
+        const meetForDelete = await this.meetRepository.findOne(id);
+
+        if(meetForDelete){
+            this.meetRepository.delete(id)
+            return meetForDelete
+        }
+
+        throw new BadRequestException(`meet with id ${id} not exist`)
+
+    }
 }

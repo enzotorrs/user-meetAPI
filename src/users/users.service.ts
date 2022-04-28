@@ -27,16 +27,15 @@ export class UsersService {
         return newUser;
     }
 
-    async deleteUserById(id: number): Promise<message>{
-        const result = await this.userRepository.delete(id)
+    async deleteUserById(id: number): Promise<User>{
+        const userForDelete = await this.userRepository.findOne(id);
 
-        if(result.affected!==0){
-            return {
-                message: `user with id ${id} deleted`
-            }
+        if(userForDelete){
+            this.userRepository.delete(id);
+            return userForDelete;
         }
 
-        throw new BadRequestException()
+        throw new BadRequestException(`user with id ${id} not exist`)
     }
 
     async updateUser(user: User): Promise<User>{
@@ -48,7 +47,5 @@ export class UsersService {
         }
 
         throw new BadRequestException()
-
-
     }
 }

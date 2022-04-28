@@ -1,13 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { User } from './user.entity';
-import { message, UsersService } from './users.service';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
     constructor(
         private readonly usersService: UsersService,
-    ){}
+    ) { }
 
     @Get()
     async getAllUsers(): Promise<User[]> {
@@ -15,7 +15,7 @@ export class UsersController {
     }
 
     @Get(':username')
-    async getUserByName(@Param('username') username: string): Promise<User>{
+    async getUserByName(@Param('username') username: string): Promise<User> {
         return await this.usersService.findByUsername(username)
     }
 
@@ -27,13 +27,13 @@ export class UsersController {
     }
 
     @Delete(':id')
-    async deleteUserById(@Param('id') id: number): Promise<message>{
-        const result = await this.usersService.deleteUserById(id);
-        return result;
+    async deleteUserById(@Param('id') id: number): Promise<User> {
+        const userDeleted = await this.usersService.deleteUserById(id);
+        return userDeleted;
     }
 
     @Put()
-    async updateUserById(@Body() user: User){
+    async updateUserById(@Body() user: User) {
         const userUpdated = await this.usersService.updateUser(user);
         return userUpdated;
     }

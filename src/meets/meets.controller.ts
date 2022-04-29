@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { JwtSuperUserGuard } from 'src/auth/guards/Jwt-superuser.guard';
 import { Meet } from './meet.entity';
 import { MeetsService } from './meets.service';
 
@@ -14,20 +14,20 @@ export class MeetsController {
         return await this.meetService.getAllMeets();
     }
     
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtSuperUserGuard)
     @Post()
     async createNewMeet(@Body() meet: Meet): Promise<Meet> {
         return await this.meetService.saveNewMeet(meet);
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtSuperUserGuard)
     @Put()
     async updateMeet(@Body() meet: Meet): Promise<Meet> {
         const meetUpdated = await this.meetService.updateMeet(meet);
         return meetUpdated;
     }
 
-    @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtSuperUserGuard)
     @Delete(':id')
     async deleteMeet(@Param('id') id: number): Promise<Meet> {
         const meetDeleted = await this.meetService.deleteMeet(id);
